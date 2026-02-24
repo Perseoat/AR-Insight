@@ -55,7 +55,7 @@ export const Dashboard = () => {
         />
       </section>
 
-      {/* Secondary Metrics */}
+      {/* Secondary Metrics */} 
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
