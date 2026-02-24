@@ -8,6 +8,7 @@ export const mockARSummary: ARData = {
   overdue: 455000,
   dso: 34.5,
   cei: 88.2,
+  badDebtRatio: 1.6,
 };
 
 export const mockAgingBuckets: AgingBucket[] = [

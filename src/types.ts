@@ -6,6 +6,7 @@ export interface ARData {
   overdue: number;
   dso: number;
   cei: number;
+  badDebtRatio: number;
 }
 
 export interface AgingBucket {
