@@ -11,22 +11,22 @@ import {
 import { motion } from "motion/react";
 import { StatCard } from "../components/StatCard";
 import { AgingChart } from "../components/AgingChart";
-import { DSOChart } from "../components/DSOChart";
+import { AgingTrendChart } from "../components/AgingTrendChart";
+// import { DSOChart } from "../components/DSOChart";
 import { DebtorsTable } from "../components/DebtorsTable";
 import {
   mockARSummary,
   mockAgingBuckets,
   mockTopDebtors,
-  mockDSOTrend,
+  // mockDSOTrend,
+  mockAgingTrend,
 } from "../mockData";
-import { getKPISummary } from "../servies/jagota-api";
-import { agingBucket } from "../servies/jagota-api";
+import { getKPISummary, getAgingBucket } from "../servies/jagota-api";
 import { AgingBucket, ARData } from "../types";
 
 export const Dashboard = () => {
   const [arSummary, setArSummary] = useState<ARData>(mockARSummary);
-  const [agingBucket, setAgingBucket] =
-    useState<AgingBucket[]>(mockAgingBuckets);
+  const [agingBucket, setAgingBucket] = useState<AgingBucket[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -62,16 +62,16 @@ export const Dashboard = () => {
 
     const fetchAgingBucket = async () => {
       try {
-        const data = await agingBucket();
-        console.log("data from api:", data);
+        const data = await getAgingBucket();
+        console.log("getAgingBucket api:", data);
 
         if (data) {
-          setAgingBucket((prev) => ({
-            ...prev,
-            range: data.range ?? data.Range ?? prev.range,
-            amount: data.amount ?? data.Total_Amount ?? prev.amount,
-            count: data.count ?? data.Invoice_Count ?? prev.count,
+          const normalizedData = data.map((item: any) => ({
+            range: item.range ?? item.Range ?? "",
+            amount: item.amount ?? item.Total_Amount ?? 0,
+            count: item.count ?? item.Invoice_Count ?? 0,
           }));
+          setAgingBucket(normalizedData);
         }
         setLoading(false);
       } catch (error) {
@@ -221,10 +221,10 @@ export const Dashboard = () => {
               <RefreshCcw size={18} />
             </button>
           </div>
-          <AgingChart data={mockAgingBuckets} />
+          <AgingChart data={agingBucket} />
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -245,8 +245,40 @@ export const Dashboard = () => {
             </div>
           </div>
           <DSOChart data={mockDSOTrend} />
+        </motion.div> */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-bold">Aging Trend (7 Months)</h3>
+              <p className="text-sm text-slate-500">
+                3 Months History | Current | 3 Months Forecast
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-sm bg-indigo-600"></span>
+                <span className="text-xs font-medium text-slate-500">
+                  Actual
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-sm bg-slate-400"></span>
+                <span className="text-xs font-medium text-slate-500">
+                  Forecast
+                </span>
+              </div>
+            </div>
+          </div>
+          <AgingTrendChart data={mockAgingTrend} />
         </motion.div>
       </section>
+
       {/* Table Section */}
       <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">

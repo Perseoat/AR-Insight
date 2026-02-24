@@ -14,7 +14,11 @@ const api = axios.create({
  * Get KPI Summary for AR Insight
  * @param arUser - User code (defaults to % for all)
  */
-export const getKPISummary = async (arUser: string = "%", fromDate: string = '20200101', toDate: string = '20201231') => {
+export const getKPISummary = async (
+  arUser: string = "%",
+  fromDate: string = "20200101",
+  toDate: string = "20201231",
+) => {
   try {
     const response = await api.get(`/ar-insight/kpi-summary`, {
       params: { arUser, fromDate, toDate },
@@ -31,22 +35,26 @@ export const getKPISummary = async (arUser: string = "%", fromDate: string = '20
   }
 };
 
-export const agingBucket = async (arUser: string = "%", fromDate: string = '20200101', toDate: string = '20201231') => {
+export const getAgingBucket = async (
+  arUser: string = "%",
+  fromDate: string = "20200101",
+  toDate: string = "20201231",
+) => {
   try {
     const response = await api.get(`/ar-insight/aging-bucket`, {
       params: { arUser, fromDate, toDate },
     });
 
     // Check structure based on providing JSON format
-    if (response.data && response.data.data && response.data.data.length > 0) {
-      return response.data.data[0];
+    if (response.data && response.data.data) {
+      return response.data.data;
     }
-    return null;
+    return [];
   } catch (error) {
-    console.error("API Error (agingBucket):", error);
+    console.error("API Error (getAgingBucket):", error);
     throw error;
   }
-};  
+};
 
 // You can add more central functions here
 // export const getOtherData = ...

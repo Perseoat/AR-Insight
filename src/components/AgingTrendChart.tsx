@@ -9,17 +9,13 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { AgingBucket } from "../types";
+import { AgingTrend } from "../types";
 
-interface AgingChartProps {
-  data: AgingBucket[];
+interface AgingTrendChartProps {
+  data: AgingTrend[];
 }
 
-const COLORS = ["#10b981", "#f59e0b", "#f97316", "#ef4444"];
-
-export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
-  console.log("AgingChart api:", data);
-
+export const AgingTrendChart: React.FC<AgingTrendChartProps> = ({ data }) => {
   return (
     <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -33,7 +29,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
             stroke="#e2e8f0"
           />
           <XAxis
-            dataKey="range"
+            dataKey="month"
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#64748b", fontSize: 12 }}
@@ -42,7 +38,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#64748b", fontSize: 12 }}
-            tickFormatter={(value) => `$${value / 1000}k`}
+            tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
           />
           <Tooltip
             cursor={{ fill: "#f1f5f9" }}
@@ -53,14 +49,17 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
             }}
             formatter={(value: number) => [
               `$${value.toLocaleString()}`,
-              "Amount",
+              "Total AR",
             ]}
           />
           <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
+                fill={entry.isForecast ? "#94a3b8" : "#6366f1"}
+                fillOpacity={entry.month === "Feb" ? 1 : 0.7}
+                stroke={entry.isForecast ? "#94a3b8" : "#6366f1"}
+                strokeDasharray={entry.isForecast ? "4 4" : "0"}
               />
             ))}
           </Bar>

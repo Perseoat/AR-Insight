@@ -1,4 +1,4 @@
-import { ARData, AgingBucket, Debtor, DSOTrend, CashFlowForecast } from './types';
+import { ARData, AgingBucket, Debtor, DSOTrend, CashFlowForecast, AgingTrend } from './types';
 
 export const mockARSummary: ARData = {
   totalOutstanding: 1250000,
@@ -40,4 +40,14 @@ export const mockCashFlowForecast: CashFlowForecast[] = [
   { week: 'Week 2', amount: 180000 },
   { week: 'Week 3', amount: 95000 },
   { week: 'Week 4', amount: 210000 },
+];
+
+export const mockAgingTrend: AgingTrend[] = [
+  { month: 'Nov', amount: 1150000, isForecast: false },
+  { month: 'Dec', amount: 1210000, isForecast: false },
+  { month: 'Jan', amount: 1180000, isForecast: false },
+  { month: 'Feb', amount: 1250000, isForecast: false }, // Current
+  { month: 'Mar', amount: 1320000, isForecast: true },
+  { month: 'Apr', amount: 1280000, isForecast: true },
+  { month: 'May', amount: 1350000, isForecast: true },
 ];
