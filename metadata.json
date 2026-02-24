@@ -1,0 +1,5 @@
+{
+  "name": "AR Insight Dashboard",
+  "description": "Professional Accounts Receivable management dashboard with aging analysis, DSO tracking, and debtor focus.",
+  "requestFramePermissions": []
+}
