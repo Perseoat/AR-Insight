@@ -21,12 +21,19 @@ import {
   // mockDSOTrend,
   mockAgingTrend,
 } from "../mockData";
-import { getKPISummary, getAgingBucket } from "../servies/jagota-api";
-import { AgingBucket, ARData } from "../types";
+import {
+  getKPISummary,
+  getAgingBucket,
+  getTopDebtors,
+} from "../servies/jagota-api";
+import { AgingBucket, AgingTrend, ARData, Debtor } from "../types";
+import { getAgingTrend } from "../servies/jagota-api";
 
 export const Dashboard = () => {
   const [arSummary, setArSummary] = useState<ARData>(mockARSummary);
   const [agingBucket, setAgingBucket] = useState<AgingBucket[]>([]);
+  const [agingTrend, setAgingTrend] = useState<AgingTrend[]>([]);
+  const [topDebtors, setTopDebtors] = useState<Debtor[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,7 +62,7 @@ export const Dashboard = () => {
         }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching Dashboard data:", error);
+        console.error("Error fetching Dashboard KPI data:", error);
         setLoading(false);
       }
     };
@@ -75,13 +82,62 @@ export const Dashboard = () => {
         }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching Dashboard data:", error);
+        console.error("Error fetching Dashboard AgingBucket data:", error);
+        setLoading(false);
+      }
+    };
+
+    const fetchAgingTrend = async () => {
+      try {
+        const data = await getAgingTrend();
+        console.log("getAgingTrend api:", data);
+
+        if (data) {
+          const normalizedData = data.map((item: any) => ({
+            month: item.month ?? item.Month_Label ?? "",
+            amount: item.amount ?? item.Total_Amount ?? 0,
+            isForecast: String(
+              item.isForecast ??
+                item.Is_Forecast ??
+                item.is_Forecast ??
+                "false",
+            ),
+          }));
+          setAgingTrend(normalizedData);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching Dashboard AgingTrend data:", error);
+        setLoading(false);
+      }
+    };
+
+    const fetchTopDebtors = async () => {
+      try {
+        const data = await getTopDebtors();
+        console.log("getTopDebtors api:", data);
+
+        if (data) {
+          const normalizedData = data.map((item: any) => ({
+            id: item.id ?? item.CUST_CODE ?? "",
+            name: item.name ?? item.CUST_NAME ?? "",
+            amount: item.amount ?? item.AMT ?? 0,
+            daysOverdue: item.daysOverdue ?? item.DAYS ?? 0,
+            status: item.status ?? item.STATUS ?? "",
+          }));
+          setTopDebtors(normalizedData);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching Dashboard TopDebtors data:", error);
         setLoading(false);
       }
     };
 
     fetchData();
     fetchAgingBucket();
+    fetchAgingTrend();
+    fetchTopDebtors();
   }, []);
 
   return (
@@ -275,7 +331,7 @@ export const Dashboard = () => {
               </div>
             </div>
           </div>
-          <AgingTrendChart data={mockAgingTrend} />
+          <AgingTrendChart data={agingTrend} />
         </motion.div>
       </section>
 
@@ -292,7 +348,7 @@ export const Dashboard = () => {
             View All Customers
           </button>
         </div>
-        <DebtorsTable debtors={mockTopDebtors} />
+        <DebtorsTable debtors={topDebtors} />
       </section>
     </>
   );

@@ -43,11 +43,11 @@ export const mockCashFlowForecast: CashFlowForecast[] = [
 ];
 
 export const mockAgingTrend: AgingTrend[] = [
-  { month: 'Nov', amount: 1150000, isForecast: false },
-  { month: 'Dec', amount: 1210000, isForecast: false },
-  { month: 'Jan', amount: 1180000, isForecast: false },
-  { month: 'Feb', amount: 1250000, isForecast: false }, // Current
-  { month: 'Mar', amount: 1320000, isForecast: true },
-  { month: 'Apr', amount: 1280000, isForecast: true },
-  { month: 'May', amount: 1350000, isForecast: true },
+  { month: 'Nov', amount: 1150000, isForecast: 'false' },
+  { month: 'Dec', amount: 1210000, isForecast: 'false' },
+  { month: 'Jan', amount: 1180000, isForecast: 'false' },
+  { month: 'Feb', amount: 1250000, isForecast: 'false' }, // Current
+  { month: 'Mar', amount: 1320000, isForecast: 'true' },
+  { month: 'Apr', amount: 1280000, isForecast: 'true' },
+  { month: 'May', amount: 1350000, isForecast: 'true' },
 ];

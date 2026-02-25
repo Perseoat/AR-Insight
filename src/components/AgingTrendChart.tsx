@@ -16,6 +16,8 @@ interface AgingTrendChartProps {
 }
 
 export const AgingTrendChart: React.FC<AgingTrendChartProps> = ({ data }) => {
+  console.log("TrendChart api:", data);
+
   return (
     <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -38,7 +40,7 @@ export const AgingTrendChart: React.FC<AgingTrendChartProps> = ({ data }) => {
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#64748b", fontSize: 12 }}
-            tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+            tickFormatter={(value) => `${(value / 1000000).toLocaleString()}M`}
           />
           <Tooltip
             cursor={{ fill: "#f1f5f9" }}
@@ -48,7 +50,7 @@ export const AgingTrendChart: React.FC<AgingTrendChartProps> = ({ data }) => {
               boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
             }}
             formatter={(value: number) => [
-              `$${value.toLocaleString()}`,
+              `${value.toLocaleString()}`,
               "Total AR",
             ]}
           />
@@ -56,10 +58,10 @@ export const AgingTrendChart: React.FC<AgingTrendChartProps> = ({ data }) => {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={entry.isForecast ? "#94a3b8" : "#6366f1"}
+                fill={entry.isForecast === "true" ? "#94a3b8" : "#6366f1"}
                 fillOpacity={entry.month === "Feb" ? 1 : 0.7}
-                stroke={entry.isForecast ? "#94a3b8" : "#6366f1"}
-                strokeDasharray={entry.isForecast ? "4 4" : "0"}
+                stroke={entry.isForecast === "true" ? "#94a3b8" : "#6366f1"}
+                strokeDasharray={entry.isForecast === "true" ? "4 4" : "0"}
               />
             ))}
           </Bar>

@@ -35,6 +35,7 @@ export interface CashFlowForecast {
 
 export interface AgingTrend {
   month: string;
+  // sortKey: string;
   amount: number;
-  isForecast: boolean;
+  isForecast: string;
 }

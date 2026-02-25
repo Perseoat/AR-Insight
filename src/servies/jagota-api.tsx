@@ -56,6 +56,49 @@ export const getAgingBucket = async (
   }
 };
 
+export const getAgingTrend = async (
+  arUser: string = "%",
+  fromDate: string = "20200101",
+  toDate: string = "20201231",
+) => {
+  try {
+    const response = await api.get(`/ar-insight/aging-trend`, {
+      params: { arUser, fromDate, toDate },
+    });
+
+    // Check structure based on providing JSON format
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("API Error (getAgingTrend):", error);
+    throw error;
+  }
+};
+
+export const getTopDebtors = async (
+  arUser: string = "%",
+  fromDate: string = "20200101",
+  toDate: string = "20201231",
+  limit: string = "TOP",
+) => {
+  try {
+    const response = await api.get(`/ar-insight/top-debtor`, {
+      params: { arUser, fromDate, toDate, limit },
+    });
+
+    // Check structure based on providing JSON format
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+    return [];
+  } catch (error) {
+    console.error("API Error (getTopDebtors):", error);
+    throw error;
+  }
+};
+
 // You can add more central functions here
 // export const getOtherData = ...
 
