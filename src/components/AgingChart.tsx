@@ -42,7 +42,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#64748b", fontSize: 12 }}
-            tickFormatter={(value) => `$${value / 1000}k`}
+            tickFormatter={(value) => `${(value / 1000000).toLocaleString()}M`}
           />
           <Tooltip
             cursor={{ fill: "#f1f5f9" }}
@@ -52,7 +52,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
               boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
             }}
             formatter={(value: number) => [
-              `$${value.toLocaleString()}`,
+              `${value.toLocaleString()}`,
               "Amount",
             ]}
           />
